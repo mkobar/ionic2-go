@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
-import { CameraPreview } from 'ionic-native';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { CameraPreview } from '@ionic-native/camera-preview';
 import { HomePage } from '../pages/home/home';
 
 @Component({
@@ -10,32 +11,32 @@ import { HomePage } from '../pages/home/home';
 export class MyApp {
   rootPage = HomePage;
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, cameraPreview: CameraPreview) {
     platform.ready().then(() => {
 
-      StatusBar.styleDefault();
-      Splashscreen.hide();
+      statusBar.styleDefault();
+      splashScreen.hide();
 
       let tapEnabled = false;
       let dragEnabled = false;
       let toBack = true;
       let alpha = 1;
-      let rect = {
-        x: 0, 
-        y: 0, 
-        width: platform.width(), 
-        height: platform.height()
-      };
 
-      CameraPreview.startCamera(
-        rect,
-        'rear',
-        tapEnabled,
-        dragEnabled,
-        toBack,
-        alpha
-      );
-
+let options = {
+  x: 0,
+  y: 0,
+      //width: platform.width(), 
+  width: window.screen.width,
+      // height: platform.height(),
+  height: window.screen.height,
+  camera: cameraPreview.CAMERA_DIRECTION.BACK,
+  toBack: true,
+  tapPhoto: false,
+  tapFocus: false,
+  previewDrag: false
+};
+      
+      cameraPreview.startCamera(options);
     });
   }
 }
